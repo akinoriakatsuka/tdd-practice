@@ -16,8 +16,9 @@ class Dollar
         return new Dollar($this->amount * $multiplier);
     }
 
-    public function equals($object): bool
+    public function equals(object $object): bool
     {
-        return true;
+        $dollar = $object; // TODO: castできないか調べる
+        return $this->amount === $dollar->amount;
     }
 }

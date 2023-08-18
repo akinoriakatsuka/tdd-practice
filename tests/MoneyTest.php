@@ -26,6 +26,9 @@ final class MoneyTest extends TestCase
     {
         $five = new Dollar(5);
         $another_five = new Dollar(5);
+        $six = new Dollar(6);
+
         $this->assertTrue($five->equals($another_five));
+        $this->assertFalse($five->equals($six));
     }
 }
