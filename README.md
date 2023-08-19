@@ -66,3 +66,12 @@ $ composer dump-autoload
 ```bash
 $ ./vendor/bin/phpunit tests --color
 ```
+
+## 2章
+
+## 3章
+
+### Value Objectパターン
+
+- オブジェクトを値として使う（参照との対比）
+- 別名参照を気にする必要がなくなる
