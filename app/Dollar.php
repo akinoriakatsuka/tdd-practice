@@ -2,10 +2,8 @@
 
 namespace App;
 
-class Dollar
+class Dollar extends Money
 {
-    private $amount;
-
     public function __construct(int $amount)
     {
         $this->amount = $amount;
@@ -14,11 +12,5 @@ class Dollar
     public function times(int $multiplier): Dollar
     {
         return new Dollar($this->amount * $multiplier);
-    }
-
-    public function equals(object $object): bool
-    {
-        $dollar = $object; // TODO: castできないか調べる
-        return $this->amount === $dollar->amount;
     }
 }

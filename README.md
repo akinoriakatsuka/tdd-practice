@@ -98,3 +98,21 @@ $ ./vendor/bin/phpunit tests --color
 
 まずは、テストを書いて、テストを通すように実装するのがTDDの手順なので、重複したコードがあっても良い。
 後で、重複を排除する。
+
+## 6章
+
+### `Fatal error: Cannot declare class Money, because the name is already in use in /path_to_dir/tdd-practice/app/Money.php on line 3` の解消
+
+原因：namespaceの書き忘れ
+
+```php:Money.php
+<?php
+
+namespace App; // これを書かないとエラーになる
+
+class Money {
+
+}
+```
+
+
