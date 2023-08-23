@@ -32,6 +32,8 @@ final class MoneyTest extends TestCase
         $five_franc = new Franc(5);
         $this->assertTrue($five_franc->equals(new Franc(5)));
         $this->assertFalse($five_franc->equals(new Franc(6)));
+
+        $this->assertFalse($five_franc->equals($five));
     }
 
     /**
