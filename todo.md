@@ -10,4 +10,4 @@
 - [x] 5 CHF * 2 = 10 CHF
 - [x] equalの一般化
 - [ ] timesの一般化
-- [ ] FrancとDollarを比較する
+- [x] FrancとDollarを比較する
