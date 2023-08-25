@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
+use App\Money;
 use App\Dollar;
 use App\Franc;
 
@@ -13,11 +14,11 @@ final class MoneyTest extends TestCase
      */
     public function testMultiplication(): void
     {
-        $five = new Dollar(5);
+        $five = Money::dollar(5);
         $product = $five->times(2);
-        $this->assertEquals($product, new Dollar(10));
+        $this->assertEquals($product, Money::dollar(10));
         $product = $five->times(3);
-        $this->assertEquals($product, new Dollar(15));
+        $this->assertEquals($product, Money::dollar(15));
     }
 
     /**
@@ -25,13 +26,13 @@ final class MoneyTest extends TestCase
      */
     public function testEquality(): void
     {
-        $five = new Dollar(5);
-        $this->assertTrue($five->equals(new Dollar(5)));
-        $this->assertFalse($five->equals(new Dollar(6)));
+        $five = Money::dollar(5);
+        $this->assertTrue($five->equals(Money::dollar(5)));
+        $this->assertFalse($five->equals(Money::dollar(6)));
 
-        $five_franc = new Franc(5);
-        $this->assertTrue($five_franc->equals(new Franc(5)));
-        $this->assertFalse($five_franc->equals(new Franc(6)));
+        $five_franc = Money::franc(5);
+        $this->assertTrue($five_franc->equals(Money::franc(5)));
+        $this->assertFalse($five_franc->equals(Money::franc(6)));
 
         $this->assertFalse($five_franc->equals($five));
     }
@@ -41,10 +42,10 @@ final class MoneyTest extends TestCase
      */
     public function testFrancMultiplication(): void
     {
-        $five = new Franc(5);
+        $five = Money::franc(5);
         $product = $five->times(2);
-        $this->assertEquals($product, new Franc(10));
+        $this->assertEquals($product, Money::franc(10));
         $product = $five->times(3);
-        $this->assertEquals($product, new Franc(15));
+        $this->assertEquals($product, Money::franc(15));
     }
 }
