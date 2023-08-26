@@ -139,3 +139,17 @@ class Money {
         parent::__construct($amount, $currency);
     }
 ```
+
+## 10章
+timesをMoneyクラスに移動するために、各々の子クラスでtimesメソッドの実装を合わせる。
+
+1. timesメソッドの中でMoneyをインスタンス化する
+2. Moneyをインスタンス化するために、Moneyクラスを具象クラスにする
+3. Moneyクラスを具象クラスにするためには、timesのabstractを削除する
+4. timesは各々の子クラスで実装しているため、Moneyクラスでは仮実装で良い（オーバーロードされる）
+    ```
+    public function times(int $multiplier): Money
+    {
+        return new Money(0, '');
+    }
+    ```
