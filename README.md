@@ -120,4 +120,22 @@ class Money {
 シグネチャを合わせたり、Moneyクラスをabstractにしてtimesメソッドを宣言したりして、徐々に近づけていく。
 その間も、常にテストが通ることを確認しながら進める。
 
+## 9章
+各々のコンストラクタの実装を合わせて、Moneyクラスに移動した。
 
+`Money.php`
+```php:Money.php
+    public function __construct(int $amount, string $currency)
+    {
+        $this->amount = $amount;
+        $this->currency = $currency;
+    }
+```
+
+`Dollar.php`
+```php:Dollar.php
+    public function __construct(int $amount, string $currency)
+    {
+        parent::__construct($amount, $currency);
+    }
+```
