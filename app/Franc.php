@@ -10,11 +10,6 @@ class Franc extends Money
         $this->currency = 'CHF';
     }
 
-    public function currency(): string
-    {
-        return $this->currency;
-    }
-
     public function times(int $multiplier): Money
     {
         return new Franc($this->amount * $multiplier);
