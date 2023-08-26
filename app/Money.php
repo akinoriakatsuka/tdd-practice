@@ -8,7 +8,7 @@ abstract class Money
     protected $currency;
 
     abstract public function times(int $multiplier): Money;
-    
+
     public function currency(): string
     {
         return $this->currency;
@@ -27,6 +27,6 @@ abstract class Money
 
     public static function franc(int $amount): Money
     {
-        return new Franc($amount);
+        return new Franc($amount, 'CHF');
     }
 }
