@@ -48,4 +48,10 @@ final class MoneyTest extends TestCase
         $product = $five->times(3);
         $this->assertEquals($product, Money::franc(15));
     }
+
+    public function testCurrency(): void
+    {
+        $this->assertEquals('CHF', Money::franc(1)->currency());
+        $this->assertEquals('USD', Money::dollar(1)->currency());
+    }
 }
