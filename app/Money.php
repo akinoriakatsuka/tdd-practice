@@ -5,8 +5,10 @@ namespace App;
 abstract class Money
 {
     protected $amount;
+    protected $currency;
 
     abstract public function times(int $multiplier): Money;
+    abstract public function currency(): string;
 
     public function equals(object $object): bool
     {
