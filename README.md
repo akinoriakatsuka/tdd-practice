@@ -153,3 +153,11 @@ timesをMoneyクラスに移動するために、各々の子クラスでtimes�
         return new Money(0, '');
     }
     ```
+
+### equalsとtoString
+junitでは、プロダクションコードのequalsメソッドを使って、テスト時のオブジェクトの等価性を比較している（？）
+phpunitでは、特にそういう機能はないので、型があっていないオブジェクトの等価性比較をすると、falseになる。
+
+toStringもおそらくjunitのみだと思われる。
+
+phpunitでも、対応するようなものがないか調べる。
