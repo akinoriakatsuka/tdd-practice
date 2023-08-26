@@ -26,15 +26,13 @@ final class MoneyTest extends TestCase
      */
     public function testEquality(): void
     {
-        $five = Money::dollar(5);
-        $this->assertTrue($five->equals(Money::dollar(5)));
-        $this->assertFalse($five->equals(Money::dollar(6)));
+        $this->assertTrue(Money::dollar(5)->equals(Money::dollar(5)));
+        $this->assertFalse(Money::dollar(5)->equals(Money::dollar(6)));
 
-        $five_franc = Money::franc(5);
-        $this->assertTrue($five_franc->equals(Money::franc(5)));
-        $this->assertFalse($five_franc->equals(Money::franc(6)));
+        $this->assertTrue(Money::franc(5)->equals(Money::franc(5)));
+        $this->assertFalse(Money::franc(5)->equals(Money::franc(6)));
 
-        $this->assertFalse($five_franc->equals($five));
+        $this->assertFalse(Money::franc(5)->equals(Money::dollar(5)));
     }
 
     /**
@@ -53,5 +51,10 @@ final class MoneyTest extends TestCase
     {
         $this->assertEquals('CHF', Money::franc(1)->currency());
         $this->assertEquals('USD', Money::dollar(1)->currency());
+    }
+
+    public function testDifferentClassEquality():void 
+    {
+        $this->assertTrue((new Money(10, 'CHF'))->equals(new Franc(10, 'CHF')));
     }
 }
