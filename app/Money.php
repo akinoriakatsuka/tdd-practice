@@ -15,7 +15,7 @@ class Money
 
     public function times(int $multiplier): Money
     {
-        return new Money(0, '');
+        return new Money($this->amount * $multiplier, $this->currency);
     }
 
     public function currency(): string
@@ -26,16 +26,16 @@ class Money
     public function equals(object $object): bool
     {
         $money = $object; // TODO: castできないか調べる
-        return $this->amount === $money->amount and get_class($this) === get_class($money);
+        return $this->amount === $money->amount and $this->currency === $money->currency;
     }
 
     public static function dollar(int $amount): Money
     {
-        return new Dollar($amount, 'USD');
+        return new Money($amount, 'USD');
     }
 
     public static function franc(int $amount): Money
     {
-        return new Franc($amount, 'CHF');
+        return new Money($amount, 'CHF');
     }
 }
