@@ -18,6 +18,11 @@ class Money
         return new Money($this->amount * $multiplier, $this->currency);
     }
 
+    public function plus(Money $added): Money
+    {
+        return new Money($this->amount + $added->amount, $this->currency);
+    }
+
     public function currency(): string
     {
         return $this->currency;
