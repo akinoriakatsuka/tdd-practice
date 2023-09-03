@@ -21,7 +21,7 @@ echo "Running checks..."
 # cs-fixer
 composer cs-fix
 
-# composer phpstan
+composer phpstan
 
 # composer test
 

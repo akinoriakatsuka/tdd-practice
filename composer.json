@@ -2,9 +2,9 @@
 
   "scripts": {
     "test": "phpunit tests --color",
-    "cs-fix": "php-cs-fixer fix app",
+    "cs-fix": "php-cs-fixer fix --config=.php-cs-fixer.dist",
     "cs-check": "php-cs-fixer fix app --dry-run --diff",
-    "phpstan": "phpstan analyse -l 7 app tests"
+    "phpstan": "phpstan analyse -l 9 app tests"
   },
   "autoload": {
     "psr-4": {
