@@ -4,8 +4,8 @@ namespace App;
 
 class Money
 {
-    protected $amount;
-    protected $currency;
+    protected int $amount;
+    protected string $currency;
 
     public function __construct(int $amount, string $currency)
     {
@@ -23,9 +23,8 @@ class Money
         return $this->currency;
     }
 
-    public function equals(object $object): bool
+    public function equals(Money   $money): bool
     {
-        $money = $object; // TODO: castできないか調べる
         return $this->amount === $money->amount and $this->currency === $money->currency;
     }
 
