@@ -37,4 +37,13 @@ final class MoneyTest extends TestCase
         $reduced = $bank->reduce($sum, "USD");
         $this->assertTrue(Money::dollar(10)->equals($reduced));
     }
+
+    public function testPlusReturnsSum(): void
+    {
+        $five = Money::dollar(5);
+        $result = $five->plus($five);
+        $sum = $result; // 本当はここでExpressionからSumへのキャストを書きたい
+        $this->assertTrue($five->equals($sum->augend));
+        $this->assertTrue($five->equals($sum->addend));
+    }
 }
