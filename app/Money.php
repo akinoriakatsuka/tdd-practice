@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
-class Money
+class Money implements Expression
 {
     protected int $amount;
     protected string $currency;
@@ -13,14 +15,14 @@ class Money
         $this->currency = $currency;
     }
 
-    public function times(int $multiplier): Money
+    public function times(int $multiplier): self
     {
-        return new Money($this->amount * $multiplier, $this->currency);
+        return new self($this->amount * $multiplier, $this->currency);
     }
 
-    public function plus(Money $added): Money
+    public function plus(self $added): Expression
     {
-        return new Money($this->amount + $added->amount, $this->currency);
+        return new self($this->amount + $added->amount, $this->currency);
     }
 
     public function currency(): string
@@ -28,18 +30,18 @@ class Money
         return $this->currency;
     }
 
-    public function equals(Money   $money): bool
+    public function equals(self $money): bool
     {
-        return $this->amount === $money->amount and $this->currency === $money->currency;
+        return $this->amount === $money->amount && $this->currency === $money->currency;
     }
 
-    public static function dollar(int $amount): Money
+    public static function dollar(int $amount): self
     {
-        return new Money($amount, 'USD');
+        return new self($amount, 'USD');
     }
 
-    public static function franc(int $amount): Money
+    public static function franc(int $amount): self
     {
-        return new Money($amount, 'CHF');
+        return new self($amount, 'CHF');
     }
 }
