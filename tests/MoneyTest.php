@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Bank;
 use App\Money;
+use App\Sum;
 use PHPUnit\Framework\TestCase;
 
 final class MoneyTest extends TestCase
@@ -45,5 +46,12 @@ final class MoneyTest extends TestCase
         $sum = $result; // 本当はここでExpressionからSumへのキャストを書きたい
         $this->assertTrue($five->equals($sum->augend));
         $this->assertTrue($five->equals($sum->addend));
+    }
+
+    public function testReduceSum() {
+        $sum = new Sum(Money::dollar(3), Money::dollar(4));
+        $bank = new Bank();
+        $result = $bank->reduce($sum, 'USD');
+        $this->assertTrue(Money::dollar(7)->equals($result));
     }
 }
