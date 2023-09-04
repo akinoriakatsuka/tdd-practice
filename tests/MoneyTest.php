@@ -2,24 +2,19 @@
 
 declare(strict_types=1);
 
-use PHPUnit\Framework\TestCase;
+use App\Bank;
 use App\Money;
+use PHPUnit\Framework\TestCase;
 
 final class MoneyTest extends TestCase
 {
-    /**
-     * @test
-     */
     public function testMultiplication(): void
     {
         $five = Money::dollar(5);
-        $this->assertEquals($five->times(2), Money::dollar(10));
-        $this->assertEquals($five->times(3), Money::dollar(15));
+        $this->assertTrue($five->times(2)->equals(Money::dollar(10)));
+        $this->assertTrue($five->times(3)->equals(Money::dollar(15)));
     }
 
-    /**
-     * @test
-     */
     public function testEquality(): void
     {
         $this->assertTrue(Money::dollar(5)->equals(Money::dollar(5)));
@@ -30,7 +25,16 @@ final class MoneyTest extends TestCase
 
     public function testCurrency(): void
     {
-        $this->assertEquals('CHF', Money::franc(1)->currency());
-        $this->assertEquals('USD', Money::dollar(1)->currency());
+        $this->assertSame('CHF', Money::franc(1)->currency());
+        $this->assertSame('USD', Money::dollar(1)->currency());
+    }
+
+    public function testSimpleAddition(): void
+    {
+        $five = Money::dollar(5);
+        $sum = $five->plus($five);
+        $bank = new Bank();
+        $reduced = $bank->reduce($sum, "USD");
+        $this->assertTrue(Money::dollar(10)->equals($reduced));
     }
 }
