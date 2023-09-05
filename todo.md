@@ -1,2 +1,6 @@
 - [ ] \$5 + 10 CHF = \$10 (if rate is 2:1)
 - [ ] \$5 + \$5 = \$10
+- [ ] \$5 + \$5 が Money を返す
+- [x] Bank->reduce(Money)
+- [ ] Moneyを変換して換算を行う
+- [ ] Reduce(Bank, String)
