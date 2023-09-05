@@ -6,7 +6,7 @@ namespace App;
 
 class Money implements Expression
 {
-    protected int $amount;
+    public int $amount;
     protected string $currency;
 
     public function __construct(int $amount, string $currency)
