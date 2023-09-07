@@ -178,3 +178,25 @@ p.94 の中断あたりで、Sumにreduceを持ってくると、グリーンバ
 ~~（とりあえず、不本意ながらpublicにして先に進む）~~
 
 Javaのprotectedは同一パッケージであればアクセスできる仕様らしい。今回は、MoneyのamountにSumからアクセスさせたいため、phpではpublicで、妥当であると考えられるのでそのまま進むことにする。
+
+# 14章
+
+PHPは配列のキーにオブジェクトを入れることはできないので、仕方なく通貨ペアのオブジェクトをシリアライズしたものをキーとして値を保存した。
+Piarの透過性比較をしないので、ハッシュコードなどはいらないかもしれない…（次章以降で確認する）
+
+set側
+```php
+    public function addRate(string $from, string $to, int $rate): void
+    {
+        $this->rates[serialize(new Pair($from, $to))] = $rate;
+    }
+```
+
+get側
+```php
+    public function rate(string $from, string $to): int
+    {
+        if ($from === $to) return 1;
+        return $this->rates[serialize(new Pair($from, $to))];
+    }
+```
