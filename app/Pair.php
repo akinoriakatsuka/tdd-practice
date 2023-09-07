@@ -15,9 +15,8 @@ class Pair
         $this->to = $to;
     }
 
-    public function equals(object $object): bool
+    public function equals(self $pair): bool
     {
-        $pair = $object;
         return $this->from === $pair->from && $this->to === $pair->to;
     }
 

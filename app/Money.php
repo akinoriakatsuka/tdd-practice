@@ -20,7 +20,7 @@ class Money implements Expression
         return new self($this->amount * $multiplier, $this->currency);
     }
 
-    public function plus(self $addend): Expression
+    public function plus(self $addend): Sum
     {
         return new Sum($this, $addend);
     }
