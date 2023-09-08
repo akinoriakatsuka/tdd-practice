@@ -6,7 +6,8 @@ namespace App;
 
 class Bank
 {
-    private $rates = [];
+    /** @var int[] */
+    private array $rates = [];
 
     public function reduce(Expression $source, string $to): Money
     {

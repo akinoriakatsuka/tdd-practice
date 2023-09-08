@@ -15,12 +15,12 @@ class Money implements Expression
         $this->currency = $currency;
     }
 
-    public function times(int $multiplier): self
+    public function times(int $multiplier): Expression
     {
         return new self($this->amount * $multiplier, $this->currency);
     }
 
-    public function plus(self $addend): Expression
+    public function plus(Expression $addend): Sum
     {
         return new Sum($this, $addend);
     }
@@ -36,7 +36,7 @@ class Money implements Expression
         return $this->currency;
     }
 
-    public function equals(self $money): bool
+    public function equals(Expression $money): bool
     {
         return $this->amount === $money->amount && $this->currency === $money->currency;
     }
