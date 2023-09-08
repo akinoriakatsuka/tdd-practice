@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App;
 
-class Sum implements Expression{
+class Sum implements Expression
+{
     public Expression $augend;
     public Expression $addend;
 
