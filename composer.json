@@ -3,7 +3,7 @@
   "scripts": {
     "test": "phpunit tests --color",
     "cs-fix": "php-cs-fixer fix --config=.php-cs-fixer.dist",
-    "cs-check": "php-cs-fixer fix app --dry-run --diff",
+    "cs-check": "php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist",
     "phpstan": "phpstan analyse -l 9 app tests"
   },
   "autoload": {
