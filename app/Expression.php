@@ -7,5 +7,6 @@ namespace App;
 interface Expression
 {
     public function plus(self $addend): self;
+    public function times(int $multiplier): self;
     public function reduce(Bank $bank, string $to): Money;
 }
