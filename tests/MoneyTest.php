@@ -12,8 +12,8 @@ final class MoneyTest extends TestCase
     public function testMultiplication(): void
     {
         $five = Money::dollar(5);
-        $this->assertTrue($five->times(2)->equals(Money::dollar(10)));
-        $this->assertTrue($five->times(3)->equals(Money::dollar(15)));
+        $this->assertEquals($five->times(2), Money::dollar(10));
+        $this->assertEquals($five->times(3), Money::dollar(15));
     }
 
     public function testEquality(): void
@@ -44,8 +44,8 @@ final class MoneyTest extends TestCase
         $five = Money::dollar(5);
         $result = $five->plus($five);
         $sum = $result; // 本当はここでExpressionからSumへのキャストを書きたい
-        $this->assertTrue($five->equals($sum->augend));
-        $this->assertTrue($five->equals($sum->addend));
+        $this->assertEquals($five, $sum->augend);
+        $this->assertEquals($five, $sum->addend);
     }
 
     public function testReduceSum(): void
