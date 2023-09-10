@@ -200,3 +200,77 @@ get側
         return $this->rates[serialize(new Pair($from, $to))];
     }
 ```
+
+## 17章
+
+### 振り返り
+- テストを綺麗に機能させるには、仮実装、三角測量、明白な実装の方法がある
+
+`tests/TriangulationSampleTest.php --color` を参照
+
+### 仮実装
+ベタ書きでテストを通す。テストを通した後に、テストケースを追加して本物の実装を追加する。
+テストケースを1+3のものだけを用意し、4を返すようにすればテストは通る。
+
+```php:TriangulationSampleTest.php
+final class SampleTest extends TestCase
+{
+    public function testSum():void
+    {
+        $this->assertSame(4, $this->plus(3,1));
+    }
+
+    private function plus(int $augend, int $addend): int
+    {
+        return 4; // 仮実装
+    }
+
+}
+```
+
+### 三角測量
+2つ以上の例があるときのみ、一般化を行う。
+
+Step1: 一つの例しかないので、一般化は行わない。（仮実装と同じ）
+
+```php:TriangulationSampleTest.php
+final class SampleTest extends TestCase
+{
+    public function testSum():void
+    {
+        $this->assertSame(4, $this->plus(3,1));
+    }
+
+    private function plus(int $augend, int $addend): int
+    {
+        return 4; // 仮実装のまま
+    }
+
+}
+```
+
+Step2: 2つの例があるので、一般化を行う。
+
+```php:TriangulationSampleTest.php
+final class SampleTest extends TestCase
+{
+    public function testSum():void
+    {
+        $this->assertSame(4, $this->plus(3,1));
+        $this->assertSame(7, $this->plus(3,4));
+    }
+
+    private function plus(int $augend, int $addend): int
+    {
+        return $augend + $addend; // 一般化
+    }
+
+}
+
+```
+
+### 明白な実装
+
+シンプルな操作をそのまま実装すること。上記のplusメソッドのようなシンプルな実装では、仮実装や三角測量をする必要は基本的にない。レッドバーが出て驚いた時などは、仮実装などのスモールステップに戻るのが良い。
+
+仮実装などの中間地点は、あくまで手段なので、すぐに書けそうなら明白な実装にする。
