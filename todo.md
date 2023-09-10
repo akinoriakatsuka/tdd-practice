@@ -1,8 +1,8 @@
-- [ ] \$5 + 10 CHF = \$10 (if rate is 2:1)
+- [x] \$5 + 10 CHF = \$10 (if rate is 2:1)
 - [x] \$5 + \$5 = \$10
-- [ ] \$5 + \$5 が Money を返す
+- [x] \$5 + \$5 が Money を返す
 - [x] Bank->reduce(Money)
 - [x] Moneyを変換して換算を行う
 - [x] Reduce(Bank, String)
 - [x] Sum->plus
-- [ ] Expression->times
+- [x] Expression->times
