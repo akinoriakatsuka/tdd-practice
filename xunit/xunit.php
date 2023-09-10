@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 (new TestCaseTest('testRunning'))->run();
-$testCaseTest->run();
+(new TestCaseTest('testSetUp'))->run();
 
 class TestCase
 {
@@ -12,8 +12,11 @@ class TestCase
     {
         $this->name = $name;
     }
+    public function setUp(): void
+    {}
     public function run(): void
     {
+        $this->setUp();
         $func = $this->name;
         $this->$func();
     }
@@ -22,10 +25,15 @@ class TestCase
 class WasRun extends TestCase
 {
     public ?int $wasRun;
+    public ?int $wasSetUp;
     public function __construct(string $name)
     {
         $this->wasRun = null;
         parent::__construct($name);
+    }
+    public function setUp(): void
+    {
+        $this->wasSetUp = 1;
     }
     public function testMethod(): void
     {
@@ -42,4 +50,12 @@ class TestCaseTest extends TestCase
         $test->run();
         assert($test->wasRun === 1);
     }
+
+    public function testSetUp(): void
+    {
+        $test = new WasRun('testMethod');
+        $test->run();
+        assert($test->wasSetUp);
+    }
+
 }
