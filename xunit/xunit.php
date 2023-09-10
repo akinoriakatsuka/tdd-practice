@@ -8,6 +8,8 @@ declare(strict_types=1);
 class TestCase
 {
     public string $name;
+    public ?int $wasRun;
+    public ?int $wasSetUp;
     public function __construct(string $name)
     {
         $this->name = $name;
@@ -24,15 +26,9 @@ class TestCase
 
 class WasRun extends TestCase
 {
-    public ?int $wasRun;
-    public ?int $wasSetUp;
-    public function __construct(string $name)
-    {
-        $this->wasRun = null;
-        parent::__construct($name);
-    }
     public function setUp(): void
     {
+        $this->wasRun = null;
         $this->wasSetUp = 1;
     }
     public function testMethod(): void
@@ -46,7 +42,6 @@ class TestCaseTest extends TestCase
     public function testRunning(): void
     {
         $test = new WasRun('testMethod');
-        assert(is_null($test->wasRun));
         $test->run();
         assert($test->wasRun === 1);
     }
