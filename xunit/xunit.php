@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-$test = new WasRun('testMethod');
-assert(!$test->wasRun);
-$test->run();
-assert($test->wasRun);
+$testCaseTest = new TestCaseTest('testRunning');
+$testCaseTest->run();
 
 class TestCase
 {
@@ -32,5 +30,16 @@ class WasRun extends TestCase
     public function testMethod()
     {
         $this->wasRun = 1;
+    }
+}
+
+class TestCaseTest extends TestCase
+{
+    public function testRunning()
+    {
+        $test = new WasRun('testMethod');
+        assert(!$test->wasRun);
+        $test->run();
+        assert($test->wasRun);
     }
 }

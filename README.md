@@ -274,3 +274,71 @@ final class SampleTest extends TestCase
 シンプルな操作をそのまま実装すること。上記のplusメソッドのようなシンプルな実装では、仮実装や三角測量をする必要は基本的にない。レッドバーが出て驚いた時などは、仮実装などのスモールステップに戻るのが良い。
 
 仮実装などの中間地点は、あくまで手段なので、すぐに書けそうなら明白な実装にする。
+
+## 18章
+
+まず、単純なテストとして、あるメソッドが呼ばれたがどうかを検証するテストを書く。（書籍にはpythonで書かれているが、phpで書いてみる）
+
+WasRunというクラスを作成して、メソッドが呼ばれたかどうかをフラグを使って返すようにする。
+メソッド名については、WasRunのインスタンス化時に名前を指定できるようにして、呼ぶときにはvariable functionを使った。
+
+途中で、WasRunクラスが、「メソッドが起動されたか記録する仕事」と「テストメソッドを動的に呼び出す仕事」をするようになったので、後者の仕事をTestCaseクラスに分離した。
+
+### 検証の仕方
+
+`xunit/xunit.php`を作り、以下のコマンドで実行する。
+
+```bash
+php xunit/xunit.php
+```
+
+一章終了時のコードは以下の通り。
+
+```php:xunit/xunit.php
+<?php
+
+declare(strict_types=1);
+
+$testCaseTest = new TestCaseTest('testRunning');
+$testCaseTest->run();
+
+class TestCase
+{
+    public $name;
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
+    public function run()
+    {
+        $func = $this->name;
+        $this->$func();
+    }
+}
+
+class WasRun extends TestCase
+{
+    public $wasRun;
+    public function __construct($name)
+    {
+        $this->wasRun = null;
+        parent::__construct($name);
+    }
+    public function testMethod()
+    {
+        $this->wasRun = 1;
+    }
+}
+
+class TestCaseTest extends TestCase
+{
+    public function testRunning()
+    {
+        $test = new WasRun('testMethod');
+        assert(!$test->wasRun);
+        $test->run();
+        assert($test->wasRun);
+    }
+}
+
+```
