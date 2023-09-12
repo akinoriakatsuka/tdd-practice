@@ -2,18 +2,23 @@
 
 declare(strict_types=1);
 
-$testCaseTest = new TestCaseTest('testRunning');
-$testCaseTest->run();
+(new TestCaseTest('testRunning'))->run();
+(new TestCaseTest('testSetUp'))->run();
 
 class TestCase
 {
-    public $name;
-    public function __construct($name)
+    public string $name;
+    public ?int $wasRun;
+    public ?int $wasSetUp;
+    public function __construct(string $name)
     {
         $this->name = $name;
     }
-    public function run()
+    public function setUp(): void
+    {}
+    public function run(): void
     {
+        $this->setUp();
         $func = $this->name;
         $this->$func();
     }
@@ -21,13 +26,12 @@ class TestCase
 
 class WasRun extends TestCase
 {
-    public $wasRun;
-    public function __construct($name)
+    public function setUp(): void
     {
         $this->wasRun = null;
-        parent::__construct($name);
+        $this->wasSetUp = 1;
     }
-    public function testMethod()
+    public function testMethod(): void
     {
         $this->wasRun = 1;
     }
@@ -35,11 +39,22 @@ class WasRun extends TestCase
 
 class TestCaseTest extends TestCase
 {
-    public function testRunning()
+    public WasRun $test;
+
+    public function setUp(): void
     {
-        $test = new WasRun('testMethod');
-        assert(!$test->wasRun);
-        $test->run();
-        assert($test->wasRun);
+        $this->test = new WasRun('testMethod');
+    }
+
+    public function testRunning(): void
+    {
+        $this->test->run();
+        assert($this->test->wasRun === 1);
+    }
+
+    public function testSetUp(): void
+    {
+        $this->test->run();
+        assert($this->test->wasSetUp === 1);
     }
 }
