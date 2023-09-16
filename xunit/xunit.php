@@ -2,59 +2,57 @@
 
 declare(strict_types=1);
 
-(new TestCaseTest('testRunning'))->run();
-(new TestCaseTest('testSetUp'))->run();
+(new TestCaseTest('testTemplateMethod'))->run();
 
 class TestCase
 {
     public string $name;
     public ?int $wasRun;
     public ?int $wasSetUp;
+
     public function __construct(string $name)
     {
         $this->name = $name;
     }
     public function setUp(): void
-    {}
+    {
+    }
+    public function tearDown(): void
+    {
+    }
     public function run(): void
     {
         $this->setUp();
         $func = $this->name;
         $this->$func();
+        $this->tearDown();
     }
 }
 
 class WasRun extends TestCase
 {
+    public string $log;
+
     public function setUp(): void
     {
-        $this->wasRun = null;
-        $this->wasSetUp = 1;
+        $this->log = 'setUp ';
     }
     public function testMethod(): void
     {
-        $this->wasRun = 1;
+        $this->log = $this->log . 'testMethod ';
+    }
+    public function tearDown(): void
+    {
+        $this->log = $this->log . 'tearDown ';
     }
 }
 
 class TestCaseTest extends TestCase
 {
-    public WasRun $test;
-
-    public function setUp(): void
+    public function testTemplateMethod(): void
     {
-        $this->test = new WasRun('testMethod');
-    }
-
-    public function testRunning(): void
-    {
-        $this->test->run();
-        assert($this->test->wasRun === 1);
-    }
-
-    public function testSetUp(): void
-    {
-        $this->test->run();
-        assert($this->test->wasSetUp === 1);
+        $test = new WasRun('testMethod');
+        $test->run();
+        assert($test->log === 'setUp testMethod tearDown ');
     }
 }
