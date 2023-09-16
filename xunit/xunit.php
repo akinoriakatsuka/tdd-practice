@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-(new TestCaseTest('testTemplateMethod'))->run();
-(new TestCaseTest('testResult'))->run();
-// (new TestCaseTest('testBrokenResult'))->run();
+echo (new TestCaseTest('testTemplateMethod'))->run()->summary() . PHP_EOL;
+echo (new TestCaseTest('testResult'))->run()->summary() . PHP_EOL;
+echo (new TestCaseTest('testFailedResult'))->run()->summary() . PHP_EOL;
+echo (new TestCaseTest('testFailedTestFormatting'))->run()->summary() . PHP_EOL;
 
 class TestCase
 {
@@ -27,8 +28,12 @@ class TestCase
         $result = new TestResult();
         $result->testStarted();
         $this->setUp();
-        $func = $this->name;
-        $this->$func();
+        try {
+            $func = $this->name;
+            $this->$func();
+        } catch (Exception $e) {
+            $result->testFailed();
+        }
         $this->tearDown();
         return $result;
     }
@@ -59,17 +64,23 @@ class WasRun extends TestCase
 class TestResult
 {
     public int $runCount;
+    public int $errorCount;
     public function __construct()
     {
         $this->runCount = 0;
+        $this->errorCount = 0;
     }
     public function testStarted(): void
     {
         $this->runCount++;
     }
+    public function testFailed(): void
+    {
+        $this->errorCount++;
+    }
     public function summary(): string
     {
-        return sprintf('%b run, 0 failed',$this->runCount);
+        return sprintf('%b run, %b failed', $this->runCount, $this->errorCount);
     }
 }
 
@@ -93,6 +104,14 @@ class TestCaseTest extends TestCase
     {
         $test = new WasRun('testBrokenMethod');
         $result = $test->run();
+        assert($result->summary() === '1 run, 1 failed');
+    }
+
+    public function testFailedTestFormatting(): void
+    {
+        $result = new TestResult();
+        $result->testStarted();
+        $result->testFailed();
         assert($result->summary() === '1 run, 1 failed');
     }
 }
