@@ -23,11 +23,13 @@ class TestCase
     }
     public function run(): TestResult
     {
+        $result = new TestResult();
+        $result->testStarted();
         $this->setUp();
         $func = $this->name;
         $this->$func();
         $this->tearDown();
-        return new TestResult();
+        return $result;
     }
 }
 
@@ -51,9 +53,18 @@ class WasRun extends TestCase
 
 class TestResult
 {
+    public int $runCount;
+    public function __construct()
+    {
+        $this->runCount = 0;
+    }
+    public function testStarted(): void
+    {
+        $this->runCount++;
+    }
     public function summary(): string
     {
-        return '1 run, 0 faild';
+        return sprintf('%b run, 0 faild',$this->runCount);
     }
 }
 
