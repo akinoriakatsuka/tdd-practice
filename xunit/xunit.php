@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 (new TestCaseTest('testTemplateMethod'))->run();
 (new TestCaseTest('testResult'))->run();
+// (new TestCaseTest('testBrokenResult'))->run();
 
 class TestCase
 {
@@ -45,6 +46,10 @@ class WasRun extends TestCase
     {
         $this->log = $this->log . 'testMethod ';
     }
+    public function testBrokenMethod(): void
+    {
+        throw new Exception();
+    }
     public function tearDown(): void
     {
         $this->log = $this->log . 'tearDown ';
@@ -64,7 +69,7 @@ class TestResult
     }
     public function summary(): string
     {
-        return sprintf('%b run, 0 faild',$this->runCount);
+        return sprintf('%b run, 0 failed',$this->runCount);
     }
 }
 
@@ -81,6 +86,13 @@ class TestCaseTest extends TestCase
     {
         $test = new WasRun('testMethod');
         $result = $test->run();
-        assert($result->summary() === '1 run, 0 faild');
+        assert($result->summary() === '1 run, 0 failed');
+    }
+
+    public function testFailedResult(): void
+    {
+        $test = new WasRun('testBrokenMethod');
+        $result = $test->run();
+        assert($result->summary() === '1 run, 1 failed');
     }
 }
