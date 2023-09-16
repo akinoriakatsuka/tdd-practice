@@ -2,11 +2,15 @@
 
 declare(strict_types=1);
 
-echo (new TestCaseTest('testTemplateMethod'))->run()->summary() . PHP_EOL;
-echo (new TestCaseTest('testResult'))->run()->summary() . PHP_EOL;
-echo (new TestCaseTest('testFailedResult'))->run()->summary() . PHP_EOL;
-echo (new TestCaseTest('testFailedTestFormatting'))->run()->summary() . PHP_EOL;
-echo (new TestCaseTest('testSuite'))->run()->summary() . PHP_EOL;
+$suite = new TestSuite();
+$suite->add(new TestCaseTest('testTemplateMethod'));
+$suite->add(new TestCaseTest('testResult'));
+$suite->add(new TestCaseTest('testFailedResult'));
+$suite->add(new TestCaseTest('testFailedResultFormatting'));
+$suite->add(new TestCaseTest('testSuite'));
+$result = new TestResult();
+$suite->run($result);
+echo $result->summary() . PHP_EOL;
 
 class TestCase
 {
