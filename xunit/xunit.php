@@ -15,8 +15,6 @@ echo $result->summary() . PHP_EOL;
 class TestCase
 {
     public string $name;
-    public ?int $wasRun;
-    public ?int $wasSetUp;
 
     public function __construct(string $name)
     {
@@ -68,6 +66,7 @@ class TestResult
 {
     public int $runCount;
     public int $errorCount;
+
     public function __construct()
     {
         $this->runCount = 0;
@@ -96,12 +95,10 @@ class TestSuite
     {
         $this->tests = [];
     }
-
     public function add(TestCase $test): void
     {
         $this->tests[] = $test;
     }
-
     public function run(TestResult $result): void
     {
         foreach ($this->tests as $test) {
@@ -112,45 +109,42 @@ class TestSuite
 
 class TestCaseTest extends TestCase
 {
+    public TestResult $result;
+
+    public function setUp(): void
+    {
+        $this->result = new TestResult();
+    }
     public function testTemplateMethod(): void
     {
         $test = new WasRun('testMethod');
-        $result = new TestResult();
-        $test->run($result);
+        $test->run($this->result);
         assert($test->log === 'setUp testMethod tearDown ');
     }
-
     public function testResult(): void
     {
         $test = new WasRun('testMethod');
-        $result = new TestResult();
-        $test->run($result);
-        assert($result->summary() === '1 run, 0 failed');
+        $test->run($this->result);
+        assert($this->result->summary() === '1 run, 0 failed');
     }
-
     public function testFailedResult(): void
     {
         $test = new WasRun('testBrokenMethod');
-        $result = new TestResult();
-        $test->run($result);
-        assert($result->summary() === '1 run, 1 failed');
+        $test->run($this->result);
+        assert($this->result->summary() === '1 run, 1 failed');
     }
-
     public function testFailedResultFormatting(): void
     {
-        $result = new TestResult();
-        $result->testStarted();
-        $result->testFailed();
-        assert($result->summary() === '1 run, 1 failed');
+        $this->result->testStarted();
+        $this->result->testFailed();
+        assert($this->result->summary() === '1 run, 1 failed');
     }
-
     public function testSuite(): void
     {
         $suite = new TestSuite();
         $suite->add(new WasRun('testMethod'));
         $suite->add(new WasRun('testBrokenMethod'));
-        $result = new TestResult();
-        $suite->run($result);
-        assert($result->summary() === '2 run, 1 failed');
+        $suite->run($this->result);
+        assert($this->result->summary() === '2 run, 1 failed');
     }
 }
