@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-(new TestCaseTest('testTemplateMethod'))->run();
-(new TestCaseTest('testResult'))->run();
-(new TestCaseTest('testFailedResult'))->run();
-(new TestCaseTest('testFailedTestFormatting'))->run();
+echo (new TestCaseTest('testTemplateMethod'))->run()->summary() . PHP_EOL;
+echo (new TestCaseTest('testResult'))->run()->summary() . PHP_EOL;
+echo (new TestCaseTest('testFailedResult'))->run()->summary() . PHP_EOL;
+echo (new TestCaseTest('testFailedTestFormatting'))->run()->summary() . PHP_EOL;
 
 class TestCase
 {
