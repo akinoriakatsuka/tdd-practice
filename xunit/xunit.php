@@ -24,9 +24,8 @@ class TestCase
     public function tearDown(): void
     {
     }
-    public function run(): TestResult
+    public function run(TestResult $result): void
     {
-        $result = new TestResult();
         $result->testStarted();
         $this->setUp();
         try {
@@ -36,7 +35,6 @@ class TestCase
             $result->testFailed();
         }
         $this->tearDown();
-        return $result;
     }
 }
 
@@ -85,30 +83,56 @@ class TestResult
     }
 }
 
+class TestSuite
+{
+    /** @var TestCase[] */
+    public $tests;
+
+    public function __construct()
+    {
+        $this->tests = [];
+    }
+
+    public function add(TestCase $test): void
+    {
+        $this->tests[] = $test;
+    }
+
+    public function run(TestResult $result): void
+    {
+        foreach ($this->tests as $test) {
+            $test->run($result);
+        }
+    }
+}
+
 class TestCaseTest extends TestCase
 {
     public function testTemplateMethod(): void
     {
         $test = new WasRun('testMethod');
-        $test->run();
+        $result = new TestResult();
+        $test->run($result);
         assert($test->log === 'setUp testMethod tearDown ');
     }
 
     public function testResult(): void
     {
         $test = new WasRun('testMethod');
-        $result = $test->run();
+        $result = new TestResult();
+        $test->run($result);
         assert($result->summary() === '1 run, 0 failed');
     }
 
     public function testFailedResult(): void
     {
         $test = new WasRun('testBrokenMethod');
-        $result = $test->run();
+        $result = new TestResult();
+        $test->run($result);
         assert($result->summary() === '1 run, 1 failed');
     }
 
-    public function testFailedTestFormatting(): void
+    public function testFailedResultFormatting(): void
     {
         $result = new TestResult();
         $result->testStarted();
@@ -121,7 +145,8 @@ class TestCaseTest extends TestCase
         $suite = new TestSuite();
         $suite->add(new WasRun('testMethod'));
         $suite->add(new WasRun('testBrokenMethod'));
-        $result = $suite->run();
+        $result = new TestResult();
+        $suite->run($result);
         assert($result->summary() === '2 run, 1 failed');
     }
 }
