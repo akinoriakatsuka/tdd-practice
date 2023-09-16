@@ -410,3 +410,95 @@ class TestCaseTest extends TestCase
 }
 
 ```
+
+## 20章
+
+> なんとWasRunのインスタンスを使う部分は１つになってしまった。気の利いたsetUpメソッドだったが、元に戻そう。
+
+この部分の意味がわからなかった。
+→使う部分が１つなので、testTemplateMethodの中でWasRunをインスタンス化すれば良いということだった。
+
+```
+ class TestCaseTest extends TestCase
+ {
+-    public WasRun $test;
+-
+-    public function setUp(): void
+-    {
+-        $this->test = new WasRun('testMethod');
+-    }
+-
+     public function testTemplateMethod(): void
+     {
+-        $this->test->run();
+-        assert($this->test->log === 'setUp testMethod ');
++        $test = new WasRun('testMethod');
++        $test->run();
++        assert($test->log === 'setUp testMethod ');
+     }
+ }
+```
+
+### 終了時のコード
+
+```php:xunit/xunit.php
+<?php
+
+declare(strict_types=1);
+
+(new TestCaseTest('testTemplateMethod'))->run();
+
+class TestCase
+{
+    public string $name;
+    public ?int $wasRun;
+    public ?int $wasSetUp;
+
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
+    public function setUp(): void
+    {
+    }
+    public function tearDown(): void
+    {
+    }
+    public function run(): void
+    {
+        $this->setUp();
+        $func = $this->name;
+        $this->$func();
+        $this->tearDown();
+    }
+}
+
+class WasRun extends TestCase
+{
+    public string $log;
+
+    public function setUp(): void
+    {
+        $this->log = 'setUp ';
+    }
+    public function testMethod(): void
+    {
+        $this->log = $this->log . 'testMethod ';
+    }
+    public function tearDown(): void
+    {
+        $this->log = $this->log . 'tearDown ';
+    }
+}
+
+class TestCaseTest extends TestCase
+{
+    public function testTemplateMethod(): void
+    {
+        $test = new WasRun('testMethod');
+        $test->run();
+        assert($test->log === 'setUp testMethod tearDown ');
+    }
+}
+
+```
