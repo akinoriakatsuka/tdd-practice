@@ -81,7 +81,7 @@ class TestResult
     }
     public function summary(): string
     {
-        return sprintf('%b run, %b failed', $this->runCount, $this->errorCount);
+        return sprintf('%d run, %d failed', $this->runCount, $this->errorCount);
     }
 }
 
