@@ -9,14 +9,16 @@
 4. テストを通す
 5. 重複を排除する
 
-## 1章
+## 第1部
 
-### 環境
+### 1章
+
+#### 環境
 
 - PHP 8.2.7 (cli)
 - Composer version 2.5.8
 
-### phpunitのインストール
+#### phpunitのインストール
 
 composerを使ってインストール。
 
@@ -34,7 +36,7 @@ composerを使ってインストール。
 $ composer install
 ```
 
-### ディレクトリ構成
+#### ディレクトリ構成
 
 `app/`と`test/`を作成
 
@@ -50,7 +52,7 @@ $ tree -L 1
 └── vendor
 ```
 
-### autoloadの設定
+#### autoloadの設定
 
 `composer.json`に以下を追記
 
@@ -70,7 +72,7 @@ $ tree -L 1
 $ composer dump-autoload
 ```
 
-### テストの実行
+#### テストの実行
 
 `/tests`にテストファイル、`/app`にテスト対象のファイルを作成し、以下を実行
 
@@ -78,30 +80,30 @@ $ composer dump-autoload
 $ ./vendor/bin/phpunit tests --color
 ```
 
-## 2章
+### 2章
 
-## 3章
+### 3章
 
-### Value Objectパターン
+#### Value Objectパターン
 
 - オブジェクトを値として使う（参照との対比）
 - 別名参照を気にする必要がなくなる
 
-## 4章
+### 4章
 
-### amountをprivateにする
+#### amountをprivateにする
 
 3章の終了時点では、テストする時にDollarのamountにアクセスする必要があった。
 これは実装の詳細なので、private変数にすることで、外部から隠蔽する。そうすることで、テストコードがDollarの内部実装に依存しなくなる。
 
-## 5章
+### 5章
 
 まずは、テストを書いて、テストを通すように実装するのがTDDの手順なので、重複したコードがあっても良い。
 後で、重複を排除する。
 
-## 6章
+### 6章
 
-### `Fatal error: Cannot declare class Money, because the name is already in use in /path_to_dir/tdd-practice/app/Money.php on line 3` の解消
+#### `Fatal error: Cannot declare class Money, because the name is already in use in /path_to_dir/tdd-practice/app/Money.php on line 3` の解消
 
 原因：namespaceの書き忘れ
 
@@ -115,12 +117,12 @@ class Money {
 }
 ```
 
-## 8章
+### 8章
 重複を消すために、DollarとFrancのtimesメソッドを一致させる。（完全に一致させられれば、Moneyクラスに移動できる）
 シグネチャを合わせたり、Moneyクラスをabstractにしてtimesメソッドを宣言したりして、徐々に近づけていく。
 その間も、常にテストが通ることを確認しながら進める。
 
-## 9章
+### 9章
 各々のコンストラクタの実装を合わせて、Moneyクラスに移動した。
 
 `Money.php`
@@ -140,7 +142,7 @@ class Money {
     }
 ```
 
-## 10章
+### 10章
 timesをMoneyクラスに移動するために、各々の子クラスでtimesメソッドの実装を合わせる。
 
 1. timesメソッドの中でMoneyをインスタンス化する
@@ -154,7 +156,7 @@ timesをMoneyクラスに移動するために、各々の子クラスでtimes�
     }
     ```
 
-### equalsとtoString
+#### equalsとtoString
 junitでは、プロダクションコードのequalsメソッドを使って、テスト時のオブジェクトの等価性を比較している（？）
 phpunitでは、特にそういう機能はないので、型があっていないオブジェクトの等価性比較をすると、falseになる。
 
@@ -162,24 +164,24 @@ toStringもおそらくjunitのみだと思われる。
 
 phpunitでも、対応するようなものがないか調べる。
 
-## 11章
+### 11章
 
 サブクラスを削除したことによって、不要になったテストを削除した。
 そのテストが不要になったかどうかは、それぞれが何を検証しているかを考慮して判断する。
 
-## 12章
+### 12章
 
 テストが整備されていると、新しいアイデアを試しやすくなる。
 
-## 13章
+### 13章
 
-### 疑問点
+#### 疑問点
 p.94 の中断あたりで、Sumにreduceを持ってくると、グリーンバーになると書いてあるが、実際はprotectedプロパティにアクセスしてしまっているため、グリーンにならなかった。JavaとPHPの違いだろうか？
 ~~（とりあえず、不本意ながらpublicにして先に進む）~~
 
 Javaのprotectedは同一パッケージであればアクセスできる仕様らしい。今回は、MoneyのamountにSumからアクセスさせたいため、phpではpublicで、妥当であると考えられるのでそのまま進むことにする。
 
-## 14章
+### 14章
 
 PHPは配列のキーにオブジェクトを入れることはできないので、仕方なく通貨ペアのオブジェクトをシリアライズしたものをキーとして値を保存した。
 Piarの等価性比較をしないので、ハッシュコードなどはいらないかもしれない…（次章以降で確認する）
@@ -201,14 +203,14 @@ get側
     }
 ```
 
-## 17章
+### 17章
 
-### 振り返り
+#### 振り返り
 - テストを綺麗に機能させるには、仮実装、三角測量、明白な実装の方法がある
 
 `tests/TriangulationSampleTest.php --color` を参照
 
-### 仮実装
+#### 仮実装
 ベタ書きでテストを通す。テストを通した後に、テストケースを追加して本物の実装を追加する。
 テストケースを1+3のものだけを用意し、4を返すようにすればテストは通る。
 
@@ -228,7 +230,7 @@ final class SampleTest extends TestCase
 }
 ```
 
-### 三角測量
+#### 三角測量
 2つ以上の例があるときのみ、一般化を行う。
 
 Step1: 一つの例しかないので、一般化は行わない。（仮実装と同じ）
@@ -269,13 +271,15 @@ final class SampleTest extends TestCase
 
 ```
 
-### 明白な実装
+#### 明白な実装
 
 シンプルな操作をそのまま実装すること。上記のplusメソッドのようなシンプルな実装では、仮実装や三角測量をする必要は基本的にない。レッドバーが出て驚いた時などは、仮実装などのスモールステップに戻るのが良い。
 
 仮実装などの中間地点は、あくまで手段なので、すぐに書けそうなら明白な実装にする。
 
-## 18章
+## 第2部 xUnit
+
+### 18章
 
 まず、単純なテストとして、あるメソッドが呼ばれたがどうかを検証するテストを書く。（書籍にはpythonで書かれているが、phpで書いてみる）
 
@@ -284,7 +288,7 @@ WasRunというクラスを作成して、メソッドが呼ばれたかどう�
 
 途中で、WasRunクラスが、「メソッドが起動されたか記録する仕事」と「テストメソッドを動的に呼び出す仕事」をするようになったので、後者の仕事をTestCaseクラスに分離した。
 
-### 検証の仕方
+#### 検証の仕方
 
 `xunit/xunit.php`を作り、以下のコマンドで実行する。
 
@@ -343,9 +347,9 @@ class TestCaseTest extends TestCase
 
 ```
 
-## 19章
+### 19章
 
-### 終了時点のコード
+#### 終了時点のコード
 
 ```php:xunit/xunit.php
 <?php
@@ -411,7 +415,7 @@ class TestCaseTest extends TestCase
 
 ```
 
-## 20章
+### 20章
 
 > なんとWasRunのインスタンスを使う部分は１つになってしまった。気の利いたsetUpメソッドだったが、元に戻そう。
 
@@ -439,7 +443,7 @@ class TestCaseTest extends TestCase
  }
 ```
 
-### 終了時のコード
+#### 終了時のコード
 
 ```php:xunit/xunit.php
 <?php
@@ -503,11 +507,11 @@ class TestCaseTest extends TestCase
 
 ```
 
-## 21章
+### 21章
 
 終了前に、テストを一度コメントアウトして、棚上げした。より小さいテストを追加する。
 
-### 終了時のコード
+#### 終了時のコード
 
 ```php:xunit/xunit.php
 <?php
@@ -611,9 +615,9 @@ class TestCaseTest extends TestCase
 
 ```
 
-## 22章
+### 22章
 
-### 終了時のコード
+#### 終了時のコード
 
 ```php:xunit/xunit.php
 <?php
@@ -736,14 +740,14 @@ class TestCaseTest extends TestCase
 
 ```
 
-## 23章
+### 23章
 
 一つひとつのテストを逐次呼んでいて、汚い実装になっているのでスイートにまとめる。
 
-### Collecting Parameterパターン
+#### Collecting Parameterパターン
 処理のパラメータに、結果格納用のオブジェクトを渡すパターン。
 
-### 終了時のコード
+#### 終了時のコード
 
 ```php:xunit/xunit.php
 <?php
