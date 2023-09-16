@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-echo (new TestCaseTest('testTemplateMethod'))->run()->summary() . PHP_EOL;
-echo (new TestCaseTest('testResult'))->run()->summary() . PHP_EOL;
-echo (new TestCaseTest('testFailedResult'))->run()->summary() . PHP_EOL;
-echo (new TestCaseTest('testFailedTestFormatting'))->run()->summary() . PHP_EOL;
+$suite = new TestSuite();
+$suite->add(new TestCaseTest('testTemplateMethod'));
+$suite->add(new TestCaseTest('testResult'));
+$suite->add(new TestCaseTest('testFailedResult'));
+$suite->add(new TestCaseTest('testFailedResultFormatting'));
+$suite->add(new TestCaseTest('testSuite'));
+$result = new TestResult();
+$suite->run($result);
+echo $result->summary() . PHP_EOL;
 
 class TestCase
 {
     public string $name;
-    public ?int $wasRun;
-    public ?int $wasSetUp;
 
     public function __construct(string $name)
     {
@@ -23,9 +26,8 @@ class TestCase
     public function tearDown(): void
     {
     }
-    public function run(): TestResult
+    public function run(TestResult $result): void
     {
-        $result = new TestResult();
         $result->testStarted();
         $this->setUp();
         try {
@@ -35,7 +37,6 @@ class TestCase
             $result->testFailed();
         }
         $this->tearDown();
-        return $result;
     }
 }
 
@@ -65,6 +66,7 @@ class TestResult
 {
     public int $runCount;
     public int $errorCount;
+
     public function __construct()
     {
         $this->runCount = 0;
@@ -80,38 +82,69 @@ class TestResult
     }
     public function summary(): string
     {
-        return sprintf('%b run, %b failed', $this->runCount, $this->errorCount);
+        return sprintf('%d run, %d failed', $this->runCount, $this->errorCount);
+    }
+}
+
+class TestSuite
+{
+    /** @var TestCase[] */
+    public $tests;
+
+    public function __construct()
+    {
+        $this->tests = [];
+    }
+    public function add(TestCase $test): void
+    {
+        $this->tests[] = $test;
+    }
+    public function run(TestResult $result): void
+    {
+        foreach ($this->tests as $test) {
+            $test->run($result);
+        }
     }
 }
 
 class TestCaseTest extends TestCase
 {
+    public TestResult $result;
+
+    public function setUp(): void
+    {
+        $this->result = new TestResult();
+    }
     public function testTemplateMethod(): void
     {
         $test = new WasRun('testMethod');
-        $test->run();
+        $test->run($this->result);
         assert($test->log === 'setUp testMethod tearDown ');
     }
-
     public function testResult(): void
     {
         $test = new WasRun('testMethod');
-        $result = $test->run();
-        assert($result->summary() === '1 run, 0 failed');
+        $test->run($this->result);
+        assert($this->result->summary() === '1 run, 0 failed');
     }
-
     public function testFailedResult(): void
     {
         $test = new WasRun('testBrokenMethod');
-        $result = $test->run();
-        assert($result->summary() === '1 run, 1 failed');
+        $test->run($this->result);
+        assert($this->result->summary() === '1 run, 1 failed');
     }
-
-    public function testFailedTestFormatting(): void
+    public function testFailedResultFormatting(): void
     {
-        $result = new TestResult();
-        $result->testStarted();
-        $result->testFailed();
-        assert($result->summary() === '1 run, 1 failed');
+        $this->result->testStarted();
+        $this->result->testFailed();
+        assert($this->result->summary() === '1 run, 1 failed');
+    }
+    public function testSuite(): void
+    {
+        $suite = new TestSuite();
+        $suite->add(new WasRun('testMethod'));
+        $suite->add(new WasRun('testBrokenMethod'));
+        $suite->run($this->result);
+        assert($this->result->summary() === '2 run, 1 failed');
     }
 }
