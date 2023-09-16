@@ -10,12 +10,14 @@ class TestCase
     public string $name;
     public ?int $wasRun;
     public ?int $wasSetUp;
+
     public function __construct(string $name)
     {
         $this->name = $name;
     }
     public function setUp(): void
-    {}
+    {
+    }
     public function run(): void
     {
         $this->setUp();
@@ -26,10 +28,12 @@ class TestCase
 
 class WasRun extends TestCase
 {
+    public string $log;
+
     public function setUp(): void
     {
         $this->wasRun = null;
-        $this->wasSetUp = 1;
+        $this->log = 'setUp ';
     }
     public function testMethod(): void
     {
@@ -55,6 +59,6 @@ class TestCaseTest extends TestCase
     public function testSetUp(): void
     {
         $this->test->run();
-        assert($this->test->wasSetUp === 1);
+        assert($this->test->log === 'setUp ');
     }
 }
