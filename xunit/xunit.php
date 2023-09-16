@@ -6,6 +6,7 @@ echo (new TestCaseTest('testTemplateMethod'))->run()->summary() . PHP_EOL;
 echo (new TestCaseTest('testResult'))->run()->summary() . PHP_EOL;
 echo (new TestCaseTest('testFailedResult'))->run()->summary() . PHP_EOL;
 echo (new TestCaseTest('testFailedTestFormatting'))->run()->summary() . PHP_EOL;
+echo (new TestCaseTest('testSuite'))->run()->summary() . PHP_EOL;
 
 class TestCase
 {
@@ -113,5 +114,14 @@ class TestCaseTest extends TestCase
         $result->testStarted();
         $result->testFailed();
         assert($result->summary() === '1 run, 1 failed');
+    }
+
+    public function testSuite(): void
+    {
+        $suite = new TestSuite();
+        $suite->add(new WasRun('testMethod'));
+        $suite->add(new WasRun('testBrokenMethod'));
+        $result = $suite->run();
+        assert($result->summary() === '2 run, 1 failed');
     }
 }
